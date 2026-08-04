@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Analytics — SmartPlacement{% endblock %}
+{% block page_title %}Analytics Dashboard{% endblock %}
+{% block page_sub %}Visual insights and key metrics{% endblock %}
+
+{% block content %}
+<div class="grid grid-4" style="margin-bottom:18px;">
+  <div class="card stat-card">
+    <div class="stat-icon blue">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M11 19V5M18 19v-7"/></svg>
+    </div>
+    <div class="stat-value mono" data-countup="{{ avg_cgpa }}" data-decimals="2">0</div>
+    <div class="stat-label">Avg. CGPA</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-icon green">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <div class="stat-value mono"><span data-countup="{{ placed_pct }}" data-decimals="2">0</span>%</div>
+    <div class="stat-label">Placement Rate</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-icon gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+    </div>
+    <div class="stat-value mono" data-countup="{{ avg_aptitude }}" data-decimals="2">0</div>
+    <div class="stat-label">Avg. Aptitude Score</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-icon red">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <div class="stat-value mono">&#8377;<span data-countup="{{ avg_salary }}" data-decimals="2">0</span></div>
+    <div class="stat-label">Avg. Salary (LPA)</div>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-title">Placement Rate by CGPA Range</div>
+    <div class="card-sub">Higher CGPA bands trend toward stronger placement outcomes</div>
+    <div class="chart-box tall"><canvas id="cgpaChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Placement by Branch</div>
+    <div class="card-sub">Share of placed students across branches</div>
+    <div class="chart-box tall"><canvas id="branchChart"></canvas></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    initBarChart('cgpaChart', {{ cgpa_labels|tojson }}, {{ cgpa_values|tojson }}, 'success');
+    initPieChart(
+      'branchChart',
+      {{ branch_labels|tojson }},
+      {{ branch_values|tojson }},
+      ['#e1bb51', '#3fbe7d', '#6f97d6', '#e2685a', '#9b7ede']
+    );
+  });
+</script>
+{% endblock %}

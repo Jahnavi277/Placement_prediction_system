@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}About — SmartPlacement{% endblock %}
+{% block page_title %}About &amp; Help{% endblock %}
+{% block page_sub %}How the system works, and where to get help{% endblock %}
+
+{% block content %}
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-title">Key Features</div>
+    <ul class="feature-list">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Clean, modern, professional interface</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Responsive across desktop, tablet and mobile</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Sidebar navigation with clear page structure</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Real-time prediction with probability breakdown</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Visual analytics with interactive charts</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Light and dark theme, remembered across visits</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Technologies Used</div>
+    <div class="tag-row">
+      <span class="tag">Flask</span>
+      <span class="tag">Jinja2</span>
+      <span class="tag">HTML5</span>
+      <span class="tag">CSS3</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">Chart.js</span>
+    </div>
+
+    <div class="card-title" style="margin-top:22px;">User Flow</div>
+    <p style="margin:0;">Enter student details on the Predict page &rarr; model runs &rarr; view the placement result and estimated salary &rarr; explore trends on the Analytics page.</p>
+  </div>
+</div>
+
+<div class="card" style="margin-top:18px;">
+  <div class="card-title">System Info</div>
+  <p style="margin:0;">Run the Flask application locally with <code class="mono" style="background:var(--bg-inset); padding:2px 7px; border-radius:4px;">python app.py</code>, then open <span class="mono">http://127.0.0.1:5000</span> in your browser.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Students — SmartPlacement{% endblock %}
+{% block page_title %}Students List{% endblock %}
+{% block page_sub %}Browse and search student records{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:18px;">
+  <div class="card-title">Placement Split</div>
+  <div class="card-sub">Across the {{ students|length }} records shown below</div>
+  <div class="split-strip">
+    <div class="chart-box"><canvas id="studentsSplitChart"></canvas></div>
+    <div class="split-figures">
+      <div class="split-figure">
+        <span class="num mono" style="color:var(--success);">{{ students|selectattr('placed')|list|length }}</span>
+        <span class="lbl">Placed</span>
+      </div>
+      <div class="split-figure">
+        <span class="num mono" style="color:var(--danger);">{{ students|rejectattr('placed')|list|length }}</span>
+        <span class="lbl">Not Placed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="search-row">
+    <input type="text" id="studentSearch" placeholder="Search by name...">
+  </div>
+
+  <div class="table-wrap">
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>CGPA</th>
+          <th>Internships</th>
+          <th>Aptitude Score</th>
+          <th>Status</th>
+          <th>Salary (LPA)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+        <tr>
+          <td>{{ s.name }}</td>
+          <td class="mono">{{ s.cgpa }}</td>
+          <td class="mono">{{ s.internships }}</td>
+          <td class="mono">{{ s.aptitude }}</td>
+          <td>
+            {% if s.placed %}
+              <span class="badge placed">Placed</span>
+            {% else %}
+              <span class="badge not-placed">Not Placed</span>
+            {% endif %}
+          </td>
+          <td class="mono">{{ s.salary if s.placed else '—' }}</td>
+          <td><a href="#" style="font-size:12.5px; color:var(--info); text-decoration:none; font-weight:600;">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const placed = {{ students|selectattr('placed')|list|length }};
+    const notPlaced = {{ students|rejectattr('placed')|list|length }};
+    initDonutChart('studentsSplitChart', placed, notPlaced);
+  });
+
+  document.getElementById('studentSearch').addEventListener('input', function (e) {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#studentTable tbody tr').forEach((row) => {
+      const name = row.children[0].textContent.toLowerCase();
+      row.style.display = name.includes(q) ? '' : 'none';
+    });
+  });
+</script>
+{% endblock %}

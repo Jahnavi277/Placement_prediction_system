@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SmartPlacement{% endblock %}</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script>
+  /* set theme before paint to avoid flash */
+  (function(){
+    var s = localStorage.getItem('sp-theme');
+    var d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', s || (d ? 'dark' : 'light'));
+  })();
+</script>
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <svg class="seal" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" stroke="#e1bb51" stroke-width="2"/>
+        <circle cx="24" cy="24" r="16.5" stroke="#e1bb51" stroke-width="1" stroke-dasharray="2 2.4"/>
+        <path d="M24 14L27.5 21.3L35.5 22.4L29.7 27.9L31.1 35.8L24 32L16.9 35.8L18.3 27.9L12.5 22.4L20.5 21.3L24 14Z" fill="#e1bb51"/>
+      </svg>
+      <div>
+        <div class="brand-name">SmartPlacement</div>
+        <div class="brand-sub">Prediction System</div>
+      </div>
+    </div>
+
+    <nav class="nav-group">
+      <div class="nav-eyebrow">Overview</div>
+      <a href="{{ url_for('dashboard') }}" class="nav-item {{ 'active' if active=='dashboard' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="{{ url_for('predict') }}" class="nav-item {{ 'active' if active=='predict' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+        Predict
+      </a>
+      <a href="{{ url_for('students') }}" class="nav-item {{ 'active' if active=='students' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1.5A3.5 3.5 0 0 0 13.5 15h-3A3.5 3.5 0 0 0 7 18.5V20"/><circle cx="12" cy="8" r="3.5"/></svg>
+        Students
+      </a>
+      <a href="{{ url_for('analytics') }}" class="nav-item {{ 'active' if active=='analytics' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M11 19V5M18 19v-7"/></svg>
+        Analytics
+      </a>
+
+      <div class="nav-eyebrow">Support</div>
+      <a href="{{ url_for('about') }}" class="nav-item {{ 'active' if active=='about' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 17v.01M12 14c0-2.2 2.2-2.1 2.2-4.2A2.2 2.2 0 0 0 12 7.6 2.2 2.2 0 0 0 9.8 9.8"/></svg>
+        About &amp; Help
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      Trained on 50,000 student records<br>
+      &copy; {{ current_year }} SmartPlacement
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title">
+          {% block page_title %}Dashboard{% endblock %}
+          <span>{% block page_sub %}Overview and key insights{% endblock %}</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg>
+        </button>
+        <div class="admin-chip">
+          <span class="admin-avatar">A</span>
+          Admin
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/vendor/chart.umd.js') }}"></script>
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

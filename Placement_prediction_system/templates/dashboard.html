@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — SmartPlacement{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_sub %}Overview and key insights{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-4" style="margin-bottom:18px;">
+  <div class="card stat-card">
+    <div class="stat-icon blue">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1.5A3.5 3.5 0 0 0 13.5 15h-3A3.5 3.5 0 0 0 7 18.5V20"/><circle cx="12" cy="8" r="3.5"/></svg>
+    </div>
+    <div class="stat-value mono" data-countup="{{ total_students }}">0</div>
+    <div class="stat-label">Total Students</div>
+  </div>
+
+  <div class="card stat-card">
+    <div class="stat-icon green">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <div class="stat-value mono" data-countup="{{ placed_students }}">0</div>
+    <div class="stat-label">Placed Students</div>
+  </div>
+
+  <div class="card stat-card">
+    <div class="stat-icon red">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+    <div class="stat-value mono" data-countup="{{ not_placed_students }}">0</div>
+    <div class="stat-label">Not Placed Students</div>
+  </div>
+
+  <div class="card stat-card">
+    <div class="stat-icon gold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <div class="stat-value mono">&#8377;<span data-countup="{{ avg_salary }}" data-decimals="2">0</span> LPA</div>
+    <div class="stat-label">Avg. Salary (Placed)</div>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-title">Placement Status Distribution</div>
+    <div class="card-sub">Share of placed vs. not placed students in the dataset</div>
+    <div class="chart-box"><canvas id="donutChart"></canvas></div>
+    <div class="legend-row">
+      <span><span class="legend-dot" style="background:var(--success)"></span>Placed — {{ placed_pct }}%</span>
+      <span><span class="legend-dot" style="background:var(--danger)"></span>Not Placed — {{ not_placed_pct }}%</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Salary Distribution (Placed Students)</div>
+    <div class="card-sub">Expected salary in LPA, banded</div>
+    <div class="chart-box"><canvas id="salaryChart"></canvas></div>
+  </div>
+</div>
+
+
+<div class="card" style="margin-top:18px;">
+  <div class="card-title">Placement Rate Trend</div>
+  <div class="card-sub">Year-over-year placement rate across graduating batches</div>
+  <div class="chart-box"><canvas id="trendChart"></canvas></div>
+</div>
+
+<div class="card" style="margin-top:18px; display:flex; gap:14px; align-items:flex-start;">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="1.8" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11.5V16"/></svg>
+  <div>
+    <div class="card-title" style="margin-bottom:2px;">About the System</div>
+    <p style="margin:0;">This system uses machine learning models to predict whether a student will be Placed or Not Placed, and to estimate the expected salary in LPA based on academic and skill parameters.</p>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    initDonutChart('donutChart', {{ placed_pct }}, {{ not_placed_pct }});
+    initBarChart('salaryChart', {{ salary_labels|tojson }}, {{ salary_values|tojson }}, 'accent');
+    initLineChart('trendChart', {{ trend_labels|tojson }}, {{ trend_values|tojson }});
+  });
+</script>
+{% endblock %}
