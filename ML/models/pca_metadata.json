@@ -1,0 +1,33 @@
+{
+    "n_samples": 50000,
+    "n_features": 21,
+    "feature_columns": [
+        "SGPA_Sem1",
+        "SGPA_Sem2",
+        "SGPA_Sem3",
+        "SGPA_Sem4",
+        "SGPA_Sem5",
+        "SGPA_Sem6",
+        "SGPA_Sem7",
+        "SGPA_Sem8",
+        "CGPA",
+        "AttendancePercent",
+        "Internships",
+        "Projects",
+        "Workshops",
+        "Certifications",
+        "Publications",
+        "AptitudeTestScore",
+        "SoftSkillsRating",
+        "CodingTestScore",
+        "MockInterviewScore",
+        "ExtraCurricular",
+        "IsAnomaly"
+    ],
+    "components_for_90_percent": 8,
+    "components_for_95_percent": 11,
+    "variance_2d": 0.7248794717627114,
+    "variance_3d": 0.7816089989736379,
+    "variance_10d": 0.948758949101997,
+    "random_state": 42
+}

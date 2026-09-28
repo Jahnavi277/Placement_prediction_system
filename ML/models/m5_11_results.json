@@ -1,0 +1,15 @@
+{
+    "bootstrap_iterations": 1000,
+    "model_a": "LogisticRegression",
+    "model_b": "GradientBoostingClassifier",
+    "original_validation_f1": {
+        "model_a": 0.9425581570428367,
+        "model_b": 0.9416647800166025,
+        "difference_a_minus_b": 0.0008933770262342655
+    },
+    "paired_bootstrap": {
+        "mean_f1_difference_a_minus_b": 0.0009175615016802292,
+        "ci_95_lower": -0.0012306937758229275,
+        "ci_95_upper": 0.0031720293934493905
+    }
+}

@@ -1,42 +1,29 @@
 import pandas as pd
 
-print("Script started")
+print("=== PlacementPredict Data Cleaning ===")
 
- #Load dataset
-df = pd.read_csv("Data/placement_predict_Dataset.csv")
+# 1. Load raw dataset
+input_file = "Data/placement_predict_Dataset.csv"
+output_file = "Data/placement_predict_cleaned.csv"
 
-print("\n--- ORIGINAL DATA ---")
-print(df.head())
+df = pd.read_csv(input_file)
 
- #1. Check shape
-print("\nDataset shape:")
-print(df.shape)
+print("\nOriginal dataset shape:", df.shape)
 
- #2. Check column names
-print("\nColumns:")
-print(df.columns)
+# 2. Show original missing values
+print("\n--- Missing Values Before Cleaning ---")
+print(df.isnull().sum()[df.isnull().sum() > 0])
 
-# 3. Check missing values
-print("\nMissing values:")
-print(df.isnull().sum())
+# 3. Remove duplicate rows
+duplicates = df.duplicated().sum()
+print("\nDuplicate rows found:", duplicates)
 
-# 4. Check duplicate rows
-print("\nDuplicate rows:")
-print(df.duplicated().sum())
-
-# 5. Check data types
-print("\nData types:")
-print(df.dtypes)
-
-# 6. Check basic statistics
-print("\nStatistics:")
-print(df.describe(include="all"))
-
-print("\nScript finished")
-# 2. Remove duplicate rows
 df = df.drop_duplicates()
 
-# 3. Fill missing numerical values with median
+print("Shape after removing duplicates:", df.shape)
+
+# 4. Handle missing numerical values
+# These are the columns identified during EDA
 numeric_columns = [
     "Workshops",
     "AptitudeTestScore",
@@ -45,29 +32,63 @@ numeric_columns = [
     "MockInterviewScore"
 ]
 
+print("\n--- Filling Missing Numerical Values ---")
+
 for column in numeric_columns:
-    df[column] = df[column].fillna(df[column].median())
+    missing = df[column].isnull().sum()
 
-# 4. Check for invalid values
+    if missing > 0:
+        median_value = df[column].median()
+        df[column] = df[column].fillna(median_value)
 
-# CGPA and SGPA should normally be between 0 and 10
+        print(
+            f"{column}: {missing} missing values "
+            f"filled with median {median_value:.2f}"
+        )
+
+# 5. Validate SGPA values
 sgpa_columns = [
-    "SGPA_Sem1", "SGPA_Sem2", "SGPA_Sem3", "SGPA_Sem4",
-    "SGPA_Sem5", "SGPA_Sem6", "SGPA_Sem7", "SGPA_Sem8"
+    "SGPA_Sem1",
+    "SGPA_Sem2",
+    "SGPA_Sem3",
+    "SGPA_Sem4",
+    "SGPA_Sem5",
+    "SGPA_Sem6",
+    "SGPA_Sem7",
+    "SGPA_Sem8"
 ]
+
 for column in sgpa_columns:
-    df.loc[(df[column] < 0) | (df[column] > 10), column] = pd.NA
+    invalid = (df[column] < 0) | (df[column] > 10)
+    count = invalid.sum()
 
-df.loc[(df["CGPA"] < 0) | (df["CGPA"] > 10), "CGPA"] = pd.NA
+    if count > 0:
+        print(f"{column}: {count} invalid values found")
+        df.loc[invalid, column] = pd.NA
 
-# Attendance should be 0–100
-df.loc[
+# 6. Validate CGPA
+invalid_cgpa = (df["CGPA"] < 0) | (df["CGPA"] > 10)
+
+if invalid_cgpa.sum() > 0:
+    print("CGPA:", invalid_cgpa.sum(), "invalid values found")
+    df.loc[invalid_cgpa, "CGPA"] = pd.NA
+
+# 7. Validate attendance
+invalid_attendance = (
     (df["AttendancePercent"] < 0) |
-    (df["AttendancePercent"] > 100),
-    "AttendancePercent"
-] = pd.NA
+    (df["AttendancePercent"] > 100)
+)
 
-# Count-based columns cannot be negative
+if invalid_attendance.sum() > 0:
+    print(
+        "AttendancePercent:",
+        invalid_attendance.sum(),
+        "invalid values found"
+    )
+
+    df.loc[invalid_attendance, "AttendancePercent"] = pd.NA
+
+# 8. Validate count-based columns
 count_columns = [
     "Internships",
     "Projects",
@@ -77,23 +98,48 @@ count_columns = [
 ]
 
 for column in count_columns:
-    df.loc[df[column] < 0, column] = pd.NA
+    invalid = df[column] < 0
+    count = invalid.sum()
 
-# 5. Fill any missing values created by invalid-value checks
+    if count > 0:
+        print(f"{column}: {count} negative values found")
+        df.loc[invalid, column] = pd.NA
+
+# 9. Fill missing values created by invalid-value checks
 for column in df.select_dtypes(include="number").columns:
-    df[column] = df[column].fillna(df[column].median())
 
-# 6. Check final missing values
-print("\nMissing values after cleaning:")
-print(df.isnull().sum())
+    missing = df[column].isnull().sum()
 
-# 7. Check duplicates again
-print("\nDuplicates after cleaning:", df.duplicated().sum())
+    if missing > 0:
+        median_value = df[column].median()
+        df[column] = df[column].fillna(median_value)
 
-# 8. Save cleaned dataset
-df.to_csv("Data/placement_predict_cleaned.csv", index=False)
+# 10. Final missing-value check
+print("\n--- Missing Values After Cleaning ---")
 
-print("\nCleaned dataset saved successfully!")
-print("Final shape:", df.shape)
+remaining_missing = df.isnull().sum()
+remaining_missing = remaining_missing[remaining_missing > 0]
 
-print("\nScript finished")
+if len(remaining_missing) == 0:
+    print("No missing values remaining.")
+else:
+    print(remaining_missing)
+
+# 11. Final duplicate check
+print(
+    "\nDuplicates after cleaning:",
+    df.duplicated().sum()
+)
+
+# 12. Save cleaned dataset
+df.to_csv(output_file, index=False)
+
+print("\n=== Cleaning Complete ===")
+print("Cleaned dataset saved to:")
+print(output_file)
+
+print("\nFinal dataset shape:", df.shape)
+
+print("\nColumns:", len(df.columns))
+
+print("\nScript finished successfully.")

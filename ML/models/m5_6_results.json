@@ -1,0 +1,11 @@
+{
+    "dataset_shape": [
+        50000,
+        32
+    ],
+    "brier_raw": 0.05696704,
+    "log_loss_raw": 0.18015625981938788,
+    "brier_platt": 0.05874442351667619,
+    "log_loss_platt": 0.19348273758789628,
+    "brier_error_reduction_percent": -3.1200208342862736
+}

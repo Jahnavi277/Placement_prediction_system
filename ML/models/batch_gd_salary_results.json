@@ -1,0 +1,13 @@
+{
+    "feature": "CGPA",
+    "target": "Salary Package",
+    "epochs": 200,
+    "learning_rate": 0.1,
+    "theta0_scaled": 14.482017373344664,
+    "theta1_scaled": 5.305558058614296,
+    "intercept_original": -18.430088617582857,
+    "slope_original": 4.11206612485651,
+    "x_mean": 8.003788118090146,
+    "x_std": 1.2902414254827757,
+    "final_mse": 18.483663819283212
+}

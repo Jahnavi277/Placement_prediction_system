@@ -1,0 +1,10 @@
+{
+  "session": "M5-5",
+  "prevalence": 0.6571,
+  "pr_auc": 0.9890743621530479,
+  "average_precision": 0.9890752160060476,
+  "optimal_threshold": 0.4321447645806377,
+  "optimal_precision": 0.9161383285302593,
+  "optimal_recall": 0.9675848424897275,
+  "optimal_f1": 0.941159055534376
+}

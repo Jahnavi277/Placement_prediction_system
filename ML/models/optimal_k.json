@@ -1,0 +1,29 @@
+{
+    "optimal_k": 2,
+    "silhouette_score": 0.3369823560510948,
+    "elbow_k": 4,
+    "random_state": 42,
+    "features": [
+        "SGPA_Sem1",
+        "SGPA_Sem2",
+        "SGPA_Sem3",
+        "SGPA_Sem4",
+        "SGPA_Sem5",
+        "SGPA_Sem6",
+        "SGPA_Sem7",
+        "SGPA_Sem8",
+        "CGPA",
+        "AttendancePercent",
+        "Internships",
+        "Projects",
+        "Workshops",
+        "Certifications",
+        "Publications",
+        "AptitudeTestScore",
+        "SoftSkillsRating",
+        "CodingTestScore",
+        "MockInterviewScore",
+        "ExtraCurricular",
+        "IsAnomaly"
+    ]
+}

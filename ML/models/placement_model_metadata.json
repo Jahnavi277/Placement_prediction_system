@@ -1,0 +1,35 @@
+{
+    "target": "PlacementStatus",
+    "selected_configuration": "MinMaxScaler",
+    "validation_size": 0.2,
+    "random_seed": 42,
+    "accuracies": {
+        "Unscaled": 0.9101,
+        "StandardScaler": 0.9099,
+        "MinMaxScaler": 0.9106
+    },
+    "feature_count": 21,
+    "features": [
+        "SGPA_Sem1",
+        "SGPA_Sem2",
+        "SGPA_Sem3",
+        "SGPA_Sem4",
+        "SGPA_Sem5",
+        "SGPA_Sem6",
+        "SGPA_Sem7",
+        "SGPA_Sem8",
+        "CGPA",
+        "AttendancePercent",
+        "Internships",
+        "Projects",
+        "Workshops",
+        "Certifications",
+        "Publications",
+        "AptitudeTestScore",
+        "SoftSkillsRating",
+        "CodingTestScore",
+        "MockInterviewScore",
+        "ExtraCurricular",
+        "IsAnomaly"
+    ]
+}
